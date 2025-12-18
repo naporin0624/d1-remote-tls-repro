@@ -1,0 +1,3 @@
+# Copy this to .dev.vars and add your values
+# The presence of .dev.vars with secrets contributes to the TLS error
+SOME_SECRET = "your-secret-value"

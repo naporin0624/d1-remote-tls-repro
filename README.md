@@ -6,6 +6,8 @@ Minimal reproduction for the TLS hostname mismatch error when using Cloudflare D
 
 When using:
 - `wrangler.toml` with `remote = true` on a D1 binding
+- Other bindings like R2 or IMAGES
+- `.dev.vars` file with secrets
 - `getPlatformProxy({ remoteBindings: true })`
 
 The following error occurs:
@@ -19,6 +21,7 @@ TLS peer's certificate is not trusted; reason = Hostname mismatch
 - OS: Linux (WSL2 / Ubuntu)
 - Node.js: 22.x
 - wrangler: 4.55.0
+- workerd: 1.20251213.0
 
 ## Steps to Reproduce
 
@@ -29,6 +32,10 @@ TLS peer's certificate is not trusted; reason = Hostname mismatch
    - `account_id`
    - `database_id`
    - `database_name`
+3. Create a `.dev.vars` file with any secret:
+   ```
+   SOME_SECRET = "test-value"
+   ```
 
 ### Reproduction
 
@@ -55,8 +62,17 @@ pnpm test:remote
 ❌ Error: TLS peer's certificate is not trusted; reason = Hostname mismatch
 ```
 
+## Key Finding
+
+The TLS error is triggered by the **combination** of:
+1. D1 binding with `remote = true`
+2. Other bindings (R2, IMAGES) present in the config
+3. `.dev.vars` file with secrets
+
+If you only have the D1 binding (no R2/IMAGES), the error does NOT occur.
+
 ## Notes
 
 - `wrangler d1 execute --remote` works correctly
-- The issue is specific to `getPlatformProxy` with remote D1 bindings
-- This may be related to [workers-sdk#8087](https://github.com/cloudflare/workers-sdk/issues/8087)
+- The issue is specific to `getPlatformProxy` with this binding combination
+- This may be related to [workers-sdk#8087](https://github.com/cloudflare/workers-sdk/issues/8087) and [workers-sdk#11106](https://github.com/cloudflare/workers-sdk/issues/11106)
