@@ -1,0 +1,15 @@
+{
+  "name": "d1-remote-tls-repro",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test:local": "tsx test.ts",
+    "test:remote": "tsx test.ts --remote"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0",
+    "wrangler": "^4.55.0"
+  }
+}

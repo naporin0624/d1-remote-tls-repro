@@ -1,0 +1,13 @@
+name = "d1-remote-tls-repro"
+main = "worker.ts"
+compatibility_date = "2025-08-15"
+compatibility_flags = ["nodejs_compat"]
+
+# Replace with your account_id
+account_id = "YOUR_ACCOUNT_ID"
+
+[[d1_databases]]
+binding = "D1"
+database_id = "YOUR_DATABASE_ID"
+database_name = "your-database-name"
+remote = true
